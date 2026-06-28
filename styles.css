@@ -29,6 +29,7 @@ body {
 
 button,
 input,
+select,
 textarea {
   font: inherit;
 }
@@ -146,6 +147,7 @@ label {
 }
 
 input,
+select,
 textarea {
   width: 100%;
   border: 1px solid var(--line);
@@ -157,6 +159,12 @@ textarea {
   transition: border 120ms ease, box-shadow 120ms ease;
 }
 
+select {
+  min-width: 88px;
+  appearance: auto;
+  cursor: pointer;
+}
+
 textarea {
   min-height: 220px;
   line-height: 1.6;
@@ -164,9 +172,50 @@ textarea {
 }
 
 input:focus,
+select:focus,
 textarea:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 4px rgba(35, 107, 91, 0.14);
+}
+
+.roll-menu {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.roll-menu select {
+  flex: 0 1 112px;
+}
+
+.date-roll select {
+  flex-basis: 104px;
+}
+
+.date-roll select:first-child {
+  flex-basis: 132px;
+}
+
+.time-roll select {
+  flex-basis: 92px;
+}
+
+.roll-menu output {
+  flex: 1 1 140px;
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 6px;
+  background: var(--surface-soft);
+  color: var(--accent-strong);
+  padding: 10px 12px;
+  font-weight: 800;
+}
+
+.roll-separator {
+  color: var(--muted);
+  font-weight: 800;
 }
 
 .inline-fields {
@@ -271,6 +320,15 @@ textarea:focus {
 
   .inline-fields {
     grid-template-columns: 1fr;
+  }
+
+  .roll-menu select,
+  .time-roll select {
+    flex: 1 1 42%;
+  }
+
+  .roll-menu output {
+    flex-basis: 100%;
   }
 
   .actions {
