@@ -1,0 +1,8 @@
+title: 支援報告 日報作成
+description: 日報を質問形式で作成し、テキストとしてコピーするためのWebアプリ
+baseurl: ""
+url: ""
+
+exclude:
+  - Gemfile
+  - Gemfile.lock

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>支援報告 日報作成</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div>
+        <h1>支援報告 日報作成</h1>
+        <p>質問に答えると、最後に提出用のテキストをまとめてコピーできます。</p>
+      </div>
+      <div class="status-pill" id="statusPill">1 / 7 入力中</div>
+    </header>
+
+    <section class="layout" aria-label="日報作成アプリ">
+      <div class="panel question-panel">
+        <div class="progress" aria-hidden="true">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <section class="question-body">
+          <p class="question-kicker" id="questionKicker"></p>
+          <h2 class="question-title" id="questionTitle"></h2>
+          <p class="question-help" id="questionHelp"></p>
+          <div class="field-grid" id="fields"></div>
+        </section>
+
+        <footer class="actions">
+          <button class="btn primary" type="button" id="nextButton">進む</button>
+          <button class="btn" type="button" id="prevButton">戻る</button>
+          <button class="btn" type="button" id="newReportButton" hidden>新しい日報を作成</button>
+        </footer>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
