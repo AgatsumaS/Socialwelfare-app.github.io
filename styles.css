@@ -25,6 +25,7 @@ body {
     linear-gradient(180deg, rgba(220, 236, 231, 0.8), rgba(246, 247, 244, 0) 320px),
     var(--bg);
   color: var(--text);
+  font-size: 16px;
 }
 
 button,
@@ -302,8 +303,26 @@ textarea:focus {
 }
 
 @media (max-width: 620px) {
+  body {
+    font-size: 20px;
+  }
+
   .app {
     padding: 12px;
+  }
+
+  .topbar h1 {
+    font-size: 34px;
+  }
+
+  .topbar p {
+    font-size: 19px;
+  }
+
+  .status-pill {
+    min-height: 48px;
+    font-size: 18px;
+    padding: 10px 15px;
   }
 
   .question-panel {
@@ -314,8 +333,28 @@ textarea:focus {
     padding: 18px;
   }
 
+  .question-kicker,
+  label {
+    font-size: 18px;
+  }
+
   .question-title {
-    font-size: 22px;
+    font-size: 32px;
+  }
+
+  .question-help {
+    font-size: 20px;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 20px;
+    padding: 16px 14px;
+  }
+
+  textarea {
+    min-height: 300px;
   }
 
   .inline-fields {
@@ -329,6 +368,8 @@ textarea:focus {
 
   .roll-menu output {
     flex-basis: 100%;
+    min-height: 58px;
+    font-size: 20px;
   }
 
   .actions {
@@ -337,10 +378,18 @@ textarea:focus {
 
   .btn {
     width: 100%;
+    min-height: 58px;
+    font-size: 20px;
   }
 
   .copy-status {
     margin-top: 8px;
+    font-size: 18px;
     text-align: left;
+  }
+
+  .result-preview {
+    font-size: 18px;
+    padding: 16px;
   }
 }
