@@ -66,11 +66,54 @@ const steps = [
   }
 ];
 
-const state = Object.fromEntries(
-  steps.flatMap((step) => step.fields.map((field) => [field.id, field.defaultValue || ""]))
-);
+const STORAGE_KEY = "socialwelfare-app:reportDraft";
 
-let currentStep = 0;
+function getDefaultState() {
+  return Object.fromEntries(
+    steps.flatMap((step) => step.fields.map((field) => [field.id, field.defaultValue || ""]))
+  );
+}
+
+function loadSavedReport() {
+  try {
+    const savedReport = window.localStorage.getItem(STORAGE_KEY);
+    return savedReport ? JSON.parse(savedReport) : null;
+  } catch (error) {
+    return null;
+  }
+}
+
+function persistReport() {
+  try {
+    window.localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        state,
+        currentStep
+      })
+    );
+  } catch (error) {
+    // 入力は画面上に残るため，保存できない環境ではそのまま続行する。
+  }
+}
+
+function clearSavedReport() {
+  try {
+    window.localStorage.removeItem(STORAGE_KEY);
+  } catch (error) {
+    // localStorage が使えない環境では何もしない。
+  }
+}
+
+const savedReport = loadSavedReport();
+const state = {
+  ...getDefaultState(),
+  ...(savedReport && typeof savedReport.state === "object" ? savedReport.state : {})
+};
+
+let currentStep = Number.isInteger(savedReport?.currentStep)
+  ? Math.min(Math.max(savedReport.currentStep, 0), steps.length)
+  : 0;
 
 const fields = document.getElementById("fields");
 const questionKicker = document.getElementById("questionKicker");
@@ -169,6 +212,7 @@ function renderDateRoll(field) {
     const dayCount = new Date(Number(state.dateYear) || currentYear, Number(state.dateMonth), 0).getDate();
     if (Number(state.dateDay) > dayCount) state.dateDay = "";
     updateDateValue();
+    persistReport();
     renderQuestion();
     renderMeta();
   });
@@ -178,6 +222,7 @@ function renderDateRoll(field) {
     const dayCount = new Date(Number(state.dateYear) || currentYear, Number(state.dateMonth), 0).getDate();
     if (Number(state.dateDay) > dayCount) state.dateDay = "";
     updateDateValue();
+    persistReport();
     renderQuestion();
     renderMeta();
   });
@@ -185,6 +230,7 @@ function renderDateRoll(field) {
   const daySelect = createSelect(dayOptionsForMonth(state.dateMonth), state.dateDay, "日", () => {
     state.dateDay = daySelect.value;
     updateDateValue();
+    persistReport();
     preview.textContent = state.date || "日付を選択";
     renderMeta();
   });
@@ -219,12 +265,14 @@ function renderTimeRoll(field) {
   const startHour = createSelect(hourOptions, state.startHour, "開始時", () => {
     state.startHour = startHour.value;
     updateTimeValue();
+    persistReport();
     preview.textContent = state.time || "時間を選択";
     renderMeta();
   });
   const startMinute = createSelect(minuteOptions, state.startMinute, "開始分", () => {
     state.startMinute = startMinute.value;
     updateTimeValue();
+    persistReport();
     preview.textContent = state.time || "時間を選択";
     renderMeta();
   });
@@ -234,12 +282,14 @@ function renderTimeRoll(field) {
   const endHour = createSelect(hourOptions, state.endHour, "終了時", () => {
     state.endHour = endHour.value;
     updateTimeValue();
+    persistReport();
     preview.textContent = state.time || "時間を選択";
     renderMeta();
   });
   const endMinute = createSelect(minuteOptions, state.endMinute, "終了分", () => {
     state.endMinute = endMinute.value;
     updateTimeValue();
+    persistReport();
     preview.textContent = state.time || "時間を選択";
     renderMeta();
   });
@@ -292,6 +342,7 @@ function renderQuestion() {
 
     input.addEventListener("input", (event) => {
       state[field.id] = event.target.value;
+      persistReport();
       renderMeta();
     });
 
@@ -413,17 +464,20 @@ function resetReport() {
     });
   });
   currentStep = 0;
+  clearSavedReport();
   render();
 }
 
 prevButton.addEventListener("click", () => {
   currentStep = Math.max(0, currentStep - 1);
+  persistReport();
   render();
 });
 
 nextButton.addEventListener("click", () => {
   if (currentStep < maxStep) {
     currentStep += 1;
+    persistReport();
     render();
   } else {
     copyReport();
